@@ -15,7 +15,7 @@ db.exec(`
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER ,
             task TEXT,
-            comleted BOOLEAN DEFAULT 0,
+            completed BOOLEAN DEFAULT 0,
             FOREIGN KEY(user_id) REFERENCES users(id)
         )
     `)

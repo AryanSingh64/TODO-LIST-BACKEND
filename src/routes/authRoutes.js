@@ -28,10 +28,10 @@ router.post('/register',(req,res)=>{
 
             //create a token
             const token = jwt.sign({id: result.lastInsertRowid}, process.env.JWT_SECRET, {expiresIn: '24h'})
-            res.json({token})
+            return res.status(201).json({token})
         } catch (err){
             console.log(err.message)
-            res.sendStatus(503)
+            return res.sendStatus(503)
         }
 
 
@@ -43,6 +43,32 @@ router.post('/login',(req,res)=>{
     //we get the usr email, and we look up the password associated with that email in the database, but we get it back and see it's encrypted which means that we cannot compare it to the one the user jsut used trying to login
     //so what we can to do, is again , one way encrypt the password the user just entered
 
+
+    const {username, password} = req.body
+
+    try{
+        const getUser = db.prepare('SELECT * FROM users WHERE username = ?')
+        const user = getUser.get(username)
+
+        if(!user) {return res.status(404).send({message: "User Not Found!!!"})}
+
+
+    //chk pass is valid
+        const passwordIsValid = bcrypt.compareSync(password, user.password)
+        if(!passwordIsValid) {
+            return res.status(401).send({message:"Invalid Password BITCH"})
+        }
+        console.log(user);
+        
+        //then we have a succesful auth
+
+        const token = jwt.sign({id:user.id}, process.env.JWT_SECRET,{expiresIn: '24h'})
+        res.json({token})
+    }catch(err){
+        console.log(err.message);
+        res.sendStatus(503)
+        
+    }
 
 })
 
