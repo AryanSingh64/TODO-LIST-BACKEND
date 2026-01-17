@@ -55,10 +55,15 @@
 
 
 ---
-
 ## 📌 Features
 
-<code>❯ REPLACE-ME</code>
+<ul>
+  <li>RESTful API for managing todo tasks (CRUD operations)</li>
+  <li>User-specific task handling</li>
+  <li>Task completion status tracking</li>
+  <li>PostgreSQL database integration using Prisma ORM</li>
+  <li>Dockerized setup for local development and deployment</li>
+</ul>
 
 ---
 
